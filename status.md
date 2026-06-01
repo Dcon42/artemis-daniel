@@ -1027,3 +1027,17 @@ Ad-hoc review of `data_pipeline.py` against `/karpathy-guidelines` (separate fro
 **Placeholder scan:** No TBD or TODO in code blocks. All function signatures consistent across tasks. `build_zscore`, `build_ls_returns`, `hac_tstat`, `stationary_bootstrap`, `deflated_sharpe_ratio`, `compute_daily_turnover` are defined before use.
 
 **Type consistency:** `BEST_SW`, `BEST_LW`, `BEST_H` are set in Task 4 Cell 5 and used in Tasks 5–9. `ls_is` is a `pd.Series` set in Task 5 Cell 6 and used throughout. `boot_p`, `dsr_result`, `ann_ret_net`, `ann_ret_2x`, `ann_ret_oos` are all set before Task 9 Cell 12.
+
+---
+
+## Version Control (2026-06-01)
+
+The project is now under git and pushed to a **private** GitHub repository.
+
+- **Remote:** https://github.com/Dcon42/artemis-daniel (visibility: **PRIVATE**, owner `Dcon42`)
+- **Default branch:** `main`
+- **Initial commit:** `1258e5bf71b6880d6fcbf17ed9dc6097dc887301` — "Initial commit: Artemis quant competition project" (2026-06-01 13:10 -0400)
+- **Tracked (19 files):** `.gitignore`, `.vscode/settings.json`, `PROJECT_SUMMARY.md`, `status.md`, `Start.py`, `data_pipeline.py`, `test_data_pipeline.py`, the four notebooks (`signal_analysis.ipynb`, `parameter_sweep.ipynb`, `universe_sweep.ipynb`, `validation.ipynb`), `data/` (5 parquet files + `symbols.json`), and `pdfs/` (3 PDFs).
+- **`.gitignore` excludes:** `.DS_Store`, `__pycache__/`, `*.py[cod]`, `.pytest_cache/`, `.ipynb_checkpoints/`, virtualenvs (`.venv/`, `venv/`, `env/`), `.idea/`, and `.env*` secrets.
+- **Secret scan:** ran before the first commit — no API keys, tokens, or credentials found in tracked files.
+- **Open follow-up:** notebooks are committed *with cell outputs* (~1.5 MB combined), so future diffs will be large; consider `nbstripout` if that becomes noisy.
