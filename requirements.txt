@@ -1,0 +1,22 @@
+# Pinned to the environment the results were produced on (Python 3.11.11,
+# conda env `artemis`). See environment.yml for the conda-native equivalent.
+
+# --- Core analysis (data_pipeline.py, test_data_pipeline.py, make_figures.py,
+#     validation.ipynb / signal_analysis.ipynb) -------------------------------
+pandas==3.0.2
+numpy==2.4.4
+scipy==1.17.1            # multipletests (BH/Holm), stats
+statsmodels==0.14.6      # HAC / Newey-West standard errors
+arch==8.0.0              # stationary block bootstrap
+pyarrow==24.0.0          # read/write the parquet data in data/
+matplotlib==3.10.9       # figures
+requests==2.34.2         # Hyperliquid API pulls in data_pipeline.py
+
+# --- Notebooks (to execute validation.ipynb etc.) --------------------------
+notebook==7.5.6
+nbconvert==7.17.1
+ipykernel==6.29.5
+
+# --- Deliverable build tooling (optional) ----------------------------------
+python-pptx==1.0.2       # make_deck.py -> pitch_deck.pptx
+weasyprint==67.0         # report.md -> ArtemisReport.pdf (with pandoc; see README)

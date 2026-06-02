@@ -242,7 +242,9 @@ def build_funding_features(funding_df: pd.DataFrame,
 
     Parameters tuned via parameter sweep (see parameter_sweep.ipynb):
       - short_window=21, long_window=90 gave strongest signal at 14-day horizon
-      - IC=-0.049, Q1-Q5 spread=2.06%
+      - IC=-0.049, Q1-Q5 spread=2.06% (these are the original in-sample sweep-cell
+        figures; the canonical full-panel numbers are IC=-0.0314 / spread=1.93%, and
+        the honest verdict that this edge is NOT deployable is in validation.ipynb)
 
     KNOWN BIASES:
     - These metrics are likely in-sample / optimistically biased: the sweep

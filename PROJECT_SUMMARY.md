@@ -2,7 +2,7 @@
 
 A single account of this competition entry: the *idea* behind the factor, *why* it
 should work in theory, *how* we tested it, and *what we learned*. For a repo file
-map see `SUMMARY.md`; for the full engineering log see `status.md`.
+map and run instructions see `README.md`.
 
 > **Scope:** this submission is a **single-factor** study of funding-rate mean
 > reversion. It stands entirely on this one signal — there is no second factor and
@@ -16,7 +16,7 @@ map see `SUMMARY.md`; for the full engineering log see `status.md`.
   Factor Rebalancing Strategy.
 - **Deadline:** June 1, 2026, 11:59 PM EST.
 - **Deliverables:** research report (PDF), code/analysis (GitHub repo), pitch deck
-  (Google Slides shared with lindsey@artemisanalytics.xyz).
+  (Google Slides).
 - **Judging:** Research Quality (30%), Signal/Edge Validity (30%), Critical
   Evaluation (20%), Communication (20%). The judges explicitly value **honest
   thinking over impressive backtests** — which is exactly what this entry leans on.
@@ -130,6 +130,11 @@ that made it look best:
   | **35** | **−0.0314** | **1.94%** | **63.6%** | **1.91** | **−19.2%** |
   | 50 | −0.0324 | 1.95% | 50.7% | 1.85 | −12.5% |
 
+  Top-25 actually posts a higher raw return and spread, but on a thinner book with a
+  deeper drawdown (−24.1% vs −19.2%) and lower Sharpe (1.68 vs 1.91); top-35 was chosen
+  for the better risk-adjusted, more-diversified profile — itself a selection on the
+  data, exactly the kind of choice the validation layer later penalizes.
+
 - Even here, honest red flags surfaced: the strategy climbed to +80% through a
   choppy Jul–Dec 2025, then **drew down hard in the Jan 2026 BTC rally** — the
   regime dependence we feared. And in the quintile sort, Q1 (lowest funding)
@@ -194,11 +199,11 @@ search-effort tests do.
 
 A few specific takeaways:
 
-- **The rank correlation and the traded spread can disagree.** The overall IC was
-  negative, but the long-low/short-high spread came out slightly positive, because
-  the worst returns sat in the *middle* funding quintiles, not the extremes. The
-  signal, to the extent it exists, is a non-monotone *tail* effect — not a clean
-  linear factor.
+- **The signal is a non-monotone *tail* effect — not a clean linear factor.** The
+  negative IC and the positive long-low/short-high spread both point to mean
+  reversion, but forward returns don't fall cleanly across quintiles: Q1 (lowest
+  funding) is best and Q5 (highest) worst, yet Q2 is anomalously weak (nearly as low
+  as Q5). The edge concentrates messily in the extremes.
 - **Regime is everything.** The factor lives in range-bound markets and dies in
   trends (it bled through the Jan 2026 BTC rally). On its own — with no offsetting
   trend exposure — that regime fragility is a first-order risk, not a footnote.
@@ -229,20 +234,41 @@ Rebalance Frequency:   Daily
 
 ---
 
-## 8. Status & remaining work
+## 8. Status & reproducibility
 
-- **Done:** data pipeline + bias documentation, full validation battery
-  (`validation.ipynb`), four-gate verdict, honest-limitations write-back into
-  `signal_analysis.ipynb`, transaction-cost model, git repo
-  (`github.com/Dcon42/artemis-daniel`, private, `main`).
-- **Remaining deliverables:** research report (PDF) and pitch deck (Google Slides
-  to lindsey@artemisanalytics.xyz).
+Everything in this study is complete and reproduces end-to-end from the committed
+`data/` with no network calls (see `README.md` for the exact run order).
+
+**Analysis:**
+
+- Data pipeline + bias documentation; forward-return alignment bug fixed and pinned
+  by `test_data_pipeline.py` (4/4 passing).
+- The full validation battery lives in `validation.ipynb` and reproduces top-to-bottom:
+  bootstrap p=0.057, DSR 47%, costs 6.45%/yr → gross 107.8% → net 94.8% / 82.7% at 2×
+  (ann.), OOS +12.72%, **verdict 2/4 → NOT DEPLOYABLE**.
+- Honest-limitations write-back in `signal_analysis.ipynb`; transaction-cost model.
+
+**Deliverable artifacts:**
+
+- **`make_figures.py` + `figures/`** — regenerates all 5 report/deck charts from
+  `data/panel.parquet`; reproduces the canonical numbers (63.62% / Sharpe 1.91 /
+  −19.25% DD / spread 1.93% / IC −0.0314 / OOS +12.72%).
+- **Research report** — `report.md` (+ `report.css`) → **`ArtemisReport.pdf`**
+  (11 pages, 5 figures embedded).
+- **Pitch deck** — `make_deck.py` → **`pitch_deck.pptx`** (11 slides, non-technical,
+  PASS/FAIL gate table, embedded figures, speaker notes).
+
+**Quality checks:** `pytest` 4/4 · figures rebuilt clean (canonical numbers reproduce
+exactly) · the headline numbers were reconciled against the data in a rubric-style
+review pass (e.g. costs framed as gross → net annualized; Q5 confirmed as the worst
+quintile with Q2 anomalously weak; the N=140 Deflated-Sharpe trial count = 84-combo
+original sweep + 56-combo in-sample re-search).
 
 ## 9. Technical notes
 
-- VS Code + conda env `artemis` (Python 3.11) on a MacBook Air; project at
-  `~/Desktop/ArtemisComp`. Key packages: pandas, numpy, statsmodels (HAC),
-  scipy (multipletests), arch (stationary bootstrap), matplotlib, pyarrow.
+- Reproduced on Python 3.11 (conda env `artemis`). Key packages: pandas, numpy,
+  statsmodels (HAC), scipy (multipletests), arch (stationary bootstrap), matplotlib,
+  pyarrow.
 - The Artemis API (`artemis-py`) covers on-chain fundamentals (price, market cap,
   TVL, fees, revenue, dev activity) but **not** per-asset funding rates — which is
   why funding is pulled from Hyperliquid directly.

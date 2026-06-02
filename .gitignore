@@ -24,8 +24,15 @@ env/
 
 # IDE
 .idea/
+.vscode/
 
 # Environment / secrets
 .env
 .env.*
 *.local
+
+# Internal working docs (kept locally, not published)
+status.md
+
+# Reference PDFs (competition brief + copyrighted paper — cited, not redistributed)
+pdfs/

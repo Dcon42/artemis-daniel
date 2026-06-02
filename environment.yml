@@ -1,0 +1,28 @@
+# Conda environment matching the one the results were produced on.
+#   conda env create -f environment.yml
+#   conda activate artemis
+name: artemis
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  # Core analysis
+  - pandas=3.0.2
+  - numpy=2.4.4
+  - scipy=1.17.1
+  - statsmodels=0.14.6
+  - matplotlib=3.10.9
+  - pyarrow=24.0.0
+  - requests=2.34.2
+  # Notebooks
+  - notebook=7.5.6
+  - nbconvert=7.17.1
+  - ipykernel=6.29.5
+  # Report PDF build (system binary)
+  - pandoc
+  - pip
+  # Packaged via pip to avoid channel-resolution friction
+  - pip:
+      - arch==8.0.0
+      - python-pptx==1.0.2
+      - weasyprint==67.0
